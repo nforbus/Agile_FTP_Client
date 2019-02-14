@@ -1,0 +1,11 @@
+C:\Users\Shubham Vasaikar\Documents\Winter 2019\Agile\Agile_FTP_Client\FTPClient\bin\Debug\netcoreapp2.2\FTPClient.deps.json
+C:\Users\Shubham Vasaikar\Documents\Winter 2019\Agile\Agile_FTP_Client\FTPClient\bin\Debug\netcoreapp2.2\FTPClient.runtimeconfig.json
+C:\Users\Shubham Vasaikar\Documents\Winter 2019\Agile\Agile_FTP_Client\FTPClient\bin\Debug\netcoreapp2.2\FTPClient.runtimeconfig.dev.json
+C:\Users\Shubham Vasaikar\Documents\Winter 2019\Agile\Agile_FTP_Client\FTPClient\bin\Debug\netcoreapp2.2\FTPClient.dll
+C:\Users\Shubham Vasaikar\Documents\Winter 2019\Agile\Agile_FTP_Client\FTPClient\bin\Debug\netcoreapp2.2\FTPClient.pdb
+C:\Users\Shubham Vasaikar\Documents\Winter 2019\Agile\Agile_FTP_Client\FTPClient\obj\Debug\netcoreapp2.2\FTPClient.csprojAssemblyReference.cache
+C:\Users\Shubham Vasaikar\Documents\Winter 2019\Agile\Agile_FTP_Client\FTPClient\obj\Debug\netcoreapp2.2\FTPClient.csproj.CoreCompileInputs.cache
+C:\Users\Shubham Vasaikar\Documents\Winter 2019\Agile\Agile_FTP_Client\FTPClient\obj\Debug\netcoreapp2.2\FTPClient.AssemblyInfoInputs.cache
+C:\Users\Shubham Vasaikar\Documents\Winter 2019\Agile\Agile_FTP_Client\FTPClient\obj\Debug\netcoreapp2.2\FTPClient.AssemblyInfo.cs
+C:\Users\Shubham Vasaikar\Documents\Winter 2019\Agile\Agile_FTP_Client\FTPClient\obj\Debug\netcoreapp2.2\FTPClient.dll
+C:\Users\Shubham Vasaikar\Documents\Winter 2019\Agile\Agile_FTP_Client\FTPClient\obj\Debug\netcoreapp2.2\FTPClient.pdb
