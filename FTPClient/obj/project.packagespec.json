@@ -26,6 +26,10 @@
   "frameworks": {
     "netcoreapp2.2": {
       "dependencies": {
+        "FluentFTP": {
+          "target": "Package",
+          "version": "[21.0.0, )"
+        },
         "Microsoft.NETCore.App": {
           "suppressParent": "All",
           "target": "Package",

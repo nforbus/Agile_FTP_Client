@@ -1,13 +1,35 @@
 using System;
+using FluentFTP;
 
 namespace FTPClient.Commands
 {
     public static class DefaultCommands
     {
-        public static string DoSomething(int id, string data)
+        
+        public static string Login(string address)
         {
-            return string.Format(
-                "I did something to the record Id {0} and save the data {1}", id, data);
+            string returnMessage = "";
+            try
+            {
+                FtpClient client = new FtpClient(address);
+
+                client.Connect();
+
+                if (client.IsConnected)
+                {
+                    Client.serverName = address;
+                    Client.clientObject = client;
+                    Client.viewingRemote = true;
+
+                    returnMessage = "Connected to " + address;
+                }
+            }
+            catch (Exception e)
+            {
+                returnMessage = "Connection failed with Exception";
+            }
+
+            return returnMessage;
         }
     }
 }
