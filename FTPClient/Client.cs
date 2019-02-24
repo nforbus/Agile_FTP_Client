@@ -2,7 +2,7 @@ using FluentFTP;
 
 namespace FTPClient
 {
-    public class Client
+    public static class Client
     {
         public static string serverName = "";
         public static FtpClient clientObject = null;
