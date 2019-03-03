@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using FluentFTP;
 
 namespace FTPClient.Commands
@@ -29,6 +30,24 @@ namespace FTPClient.Commands
                 returnMessage = "Connection failed with Exception";
             }
 
+            return returnMessage;
+        }
+        public static string listRemote()
+        {
+            string returnMessage = "";
+            string res = "";
+            try
+            {
+                foreach (FtpListItem item in Client.clientObject.GetListing("/pub"))
+                {
+                    res += item.FullName + "\n";
+                }
+                returnMessage = res;
+            }
+            catch (Exception e)
+            {
+                returnMessage = "Listing failed with Exception";
+            }
             return returnMessage;
         }
     }
