@@ -5,7 +5,7 @@ namespace FTPClient.Commands
 {
     public static class DefaultCommands
     {
-        
+
         public static string Login(string address)
         {
             string returnMessage = "";
@@ -31,5 +31,35 @@ namespace FTPClient.Commands
 
             return returnMessage;
         }
+        public static string listRemote()         {             string returnMessage = "";
+            string res = "";             try             {                  foreach (FtpListItem item in Client.clientObject.GetListing("/"))                 {
+
+                    // get modified date/time of the file or folder
+                    res += item.FullName + "\n";
+
+                }
+                returnMessage = res;             }             catch (Exception e)             {                 returnMessage = "Listing failed with Exception";             }             return returnMessage;         }          public static string listLocalDir(string path)         {             string returnMessage = "";             try             {
+                returnMessage = "The directories are:" + "\n";                 var directories = System.IO.Directory.GetDirectories(path);
+                foreach (string item in directories)
+                    returnMessage = returnMessage + '\n' + item;             }             catch (Exception e)             {                 returnMessage = "Listing of local directories failed with Exception";             }             return returnMessage;         }          public static string search(string path)
+        {
+            string returnMessage = "";
+            try
+            {
+                returnMessage = "The directories are:" + "\n";
+                var directories = System.IO.Directory.GetDirectories(path);
+                foreach (string item in directories)
+                    returnMessage = returnMessage + '\n' + item;
+            }
+            catch (Exception e)
+            {
+                returnMessage = "Listing of local directories failed with Exception";
+            }
+            return returnMessage;
+        }
+
+
+
     }
 }
+    
