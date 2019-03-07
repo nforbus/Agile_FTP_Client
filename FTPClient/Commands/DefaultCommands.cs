@@ -1,4 +1,5 @@
 using System;
+using System.Net;
 using FluentFTP;
 
 namespace FTPClient.Commands
@@ -6,12 +7,15 @@ namespace FTPClient.Commands
     public static class DefaultCommands
     {
         
-        public static string Login(string address)
+        public static string Login(string address, string username, string password)
         {
             string returnMessage = "";
             try
             {
-                FtpClient client = new FtpClient(address);
+                FtpClient client = new FtpClient(address)
+                {
+                    Credentials = new NetworkCredential(username, password)
+                };
 
                 client.Connect();
 
