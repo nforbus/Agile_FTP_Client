@@ -7,14 +7,19 @@ namespace FTPClient.Commands
     public static class DefaultCommands
     {
         
-        public static string Login(string address, string username, string password)
+        public static string Login(string address, string username)
         {
             string returnMessage = "";
+            
+            System.Console.Write("Enter the password: ");
+            string passwordFromConsole = FTPClient.Console.Console.ReadPassword();
+            System.Console.Write('\n');
             try
             {
+                
                 FtpClient client = new FtpClient(address)
                 {
-                    Credentials = new NetworkCredential(username, password)
+                    Credentials = new NetworkCredential(username, passwordFromConsole)
                 };
 
                 client.Connect();
