@@ -1,4 +1,6 @@
 using System;
+using System.Net;
+using System.Security.Cryptography;
 using FluentFTP;
 
 namespace FTPClient.Commands
@@ -6,12 +8,30 @@ namespace FTPClient.Commands
     public static class DefaultCommands
     {
         
-        public static string Login(string address)
+        public static string Login(string address, string username="")
         {
             string returnMessage = "";
+            string password = "";
+            if (username == "")
+            {
+                username = "anonymous";
+                password = "anonymous";
+            }
+            else
+            {
+                System.Console.Write("Enter the password: ");
+                password = FTPClient.Console.Console.ReadPassword();
+                System.Console.Write('\n');
+                
+            }
+            
             try
             {
-                FtpClient client = new FtpClient(address);
+                
+                FtpClient client = new FtpClient(address)
+                {
+                    Credentials = new NetworkCredential(username, password)
+                };
 
                 client.Connect();
 
