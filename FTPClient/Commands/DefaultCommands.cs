@@ -1,5 +1,8 @@
 using System;
+<<<<<<< HEAD
 using System.Net;
+=======
+>>>>>>> c9ddd3f4cada6783ac6b3e4afea980797ebac0d3
 using System.IO;
 using FluentFTP;
 
@@ -52,6 +55,7 @@ namespace FTPClient.Commands
             return returnMessage;
         }
 
+
         public static string cd(string filePath)
         {
             FTPClient.Client.clientObject.SetWorkingDirectory(filePath);
@@ -70,7 +74,6 @@ namespace FTPClient.Commands
             string res = "";
             try
             {
-                //list files from GetWorkingDirectory
                 foreach (FtpListItem item in Client.clientObject.GetListing(Client.clientObject.GetWorkingDirectory()))
                 {
                     res += item.Name + "\n";
