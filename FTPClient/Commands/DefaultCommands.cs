@@ -1,6 +1,6 @@
 using System;
 using System.Net;
-using System.Security.Cryptography;
+using System.IO;
 using FluentFTP;
 
 namespace FTPClient.Commands
@@ -51,6 +51,7 @@ namespace FTPClient.Commands
 
             return returnMessage;
         }
+<<<<<<< HEAD
 
         public static string cd(string filePath)
         {
@@ -64,4 +65,25 @@ namespace FTPClient.Commands
             return FTPClient.Client.clientObject.GetWorkingDirectory();
         }
      }
+=======
+        public static string listRemote()
+        {
+            string returnMessage = "";
+            string res = "";
+            try
+            {
+                foreach (FtpListItem item in Client.clientObject.GetListing("/pub"))
+                {
+                    res += item.FullName + "\n";
+                }
+                returnMessage = res;
+            }
+            catch (Exception e)
+            {
+                returnMessage = "Listing failed with Exception";
+            }
+            return returnMessage;
+        }
+    }
+>>>>>>> Resolved merged conflicts
 }
