@@ -109,5 +109,41 @@ namespace FTPClient.Commands
             }
             return returnMessage;
         }
+
+        public static string upload(string source, string destination)
+        {
+            string returnMessage = "";
+            try
+            {
+               if(FTPClient.Client.clientObject.UploadFile(source, destination))
+
+                returnMessage = "Upload Successful";
+               else
+                    returnMessage = "Upload failed";
+
+            }
+            catch (Exception e)
+            {
+                returnMessage = "Upload failed exception" + e;
+            }
+            return returnMessage;
+        }
+        public static string download(string source, string destination)
+        {
+            string returnMessage = "";
+            try
+            {
+                Client.clientObject.DownloadFile(source, destination);
+                returnMessage = "Download succesful";
+
+            }
+            catch (Exception e)
+            {
+                returnMessage = "Download failed" + e;
+            }
+            return returnMessage;
+        }
+
+
     }
 }
