@@ -51,8 +51,6 @@ namespace FTPClient.Commands
 
             return returnMessage;
         }
-<<<<<<< HEAD
-<<<<<<< HEAD
 
         public static string cd(string filePath)
         {
@@ -65,20 +63,17 @@ namespace FTPClient.Commands
         {
             return FTPClient.Client.clientObject.GetWorkingDirectory();
         }
-     }
-=======
-        public static string listRemote()
-=======
+
         public static string lr()
->>>>>>> Resolved merged conflicts
         {
             string returnMessage = "";
             string res = "";
             try
             {
-                foreach (FtpListItem item in Client.clientObject.GetListing("/pub"))
+                //list files from GetWorkingDirectory
+                foreach (FtpListItem item in Client.clientObject.GetListing(Client.clientObject.GetWorkingDirectory()))
                 {
-                    res += item.FullName + "\n";
+                    res += item.Name + "\n";
                 }
                 returnMessage = res;
             }
@@ -88,30 +83,5 @@ namespace FTPClient.Commands
             }
             return returnMessage;
         }
-
-        public static string find(string path)
-        {
-            //find takes parameter as path e.g /pub/1.docx
-            string returnMessage = "";
-            try
-            {
-                //check if file exist in path
-                if (Client.clientObject.FileExists(path))
-                {
-                    returnMessage = "File Found";
-                }
-                else
-                {
-                    returnMessage = "File not Found";
-                }
-           
-            }
-            catch (Exception e)
-            {
-                returnMessage = "Listing failed with Exception";
-            }
-            return returnMessage;
-        }
     }
->>>>>>> Resolved merged conflicts
 }
