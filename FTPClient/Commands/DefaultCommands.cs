@@ -3,14 +3,14 @@ using System.Net;
 using System.Security.Cryptography;
 using System.IO;
 using System.Linq;
+using System.IO;
 using FluentFTP;
 
 namespace FTPClient.Commands
 {
     public static class DefaultCommands
-    {
-
-        public static string Login(string address, string username = "")
+    { 
+        public static string Login(string address, string username="")
         {
             string returnMessage = "";
             string password = "";
@@ -29,7 +29,6 @@ namespace FTPClient.Commands
 
             try
             {
-
                 FtpClient client = new FtpClient(address)
                 {
                     Credentials = new NetworkCredential(username, password)
@@ -42,7 +41,7 @@ namespace FTPClient.Commands
                     Client.serverName = address;
                     Client.clientObject = client;
                     Client.viewingRemote = true;
-
+                    FTPClient.Console.Console.readPrompt = "FTP ("+ FTPClient.Client.clientObject.GetWorkingDirectory() + ")> ";
                     returnMessage = "Connected to " + address;
                 }
             }
@@ -54,25 +53,61 @@ namespace FTPClient.Commands
             return returnMessage;
         }
 
-        public static string ls(string path)
+        public static string cd(string filePath)
+        {
+            FTPClient.Client.clientObject.SetWorkingDirectory(filePath);
+            FTPClient.Console.Console.readPrompt = "FTP ("+ FTPClient.Client.clientObject.GetWorkingDirectory() + ")> ";
+            return "";
+        }
+
+        public static string pwd()
+        {
+            return FTPClient.Client.clientObject.GetWorkingDirectory();
+        }
+
+        public static string lr()
         {
             string returnMessage = "";
+            string res = "";
             try
             {
-                returnMessage = "The directories are:" + "\n";
-                var directories = System.IO.Directory.GetDirectories(path);
-                foreach (string item in directories)
+                foreach (FtpListItem item in Client.clientObject.GetListing(Client.clientObject.GetWorkingDirectory()))
                 {
-                    returnMessage = returnMessage + '\n' + item;
+                    res += item.Name + "\n";
                 }
+                returnMessage = res;
             }
             catch (Exception e)
             {
-                returnMessage = "Listing of local directories failed with Exception";
+                returnMessage = "Listing failed with Exception";
             }
             return returnMessage;
         }
 
+        public static string ls()
+        {
+            string returnMessage = "";
+            try
+            {
+                returnMessage = "The directories and files are:" + "\n";
+                var currentdir = System.IO.Directory.GetCurrentDirectory();
+                var directories = System.IO.Directory.GetDirectories(currentdir);
+                var files = System.IO.Directory.GetFiles(currentdir);
+                foreach (string item in directories)
+                {
+                    var dir = new DirectoryInfo(item).Name;
+                    returnMessage = returnMessage + '\n' + dir;
+                }
+                foreach (string file in files)
+                {
+                    returnMessage = returnMessage + '\n' + Path.GetFileName(file);
+                }
+            }
+            catch (Exception e)
+            {
+                returnMessage = "Listing of local directories and files failed with Exception";
+            }
+            return returnMessage;
+        }
     }
 }
-    

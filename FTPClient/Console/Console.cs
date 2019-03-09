@@ -365,11 +365,11 @@ namespace FTPClient.Console
         }
 
 
-        const string _readPrompt = "console> ";
+        public static string readPrompt = "FTP> ";
         public static string ReadFromConsole(string promptMessage = "")
         {
             // Show a prompt, and get input:
-            System.Console.Write(_readPrompt + promptMessage);
+            System.Console.Write(readPrompt + promptMessage);
             return System.Console.ReadLine();
         }
 
