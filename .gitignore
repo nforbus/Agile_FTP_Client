@@ -1,4 +1,4 @@
 FTPClient/bin/
 FTPClient/obj/
-/.vs
-/FTPClient/.vs/FTPClient
+.DS_Store
+.vs/

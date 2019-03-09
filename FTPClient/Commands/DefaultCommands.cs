@@ -1,13 +1,15 @@
 using System;
 using System.Net;
 using System.Security.Cryptography;
+using System.IO;
+using System.Linq;
+using System.IO;
 using FluentFTP;
 
 namespace FTPClient.Commands
 {
     public static class DefaultCommands
-    {
-        
+    { 
         public static string Login(string address, string username="")
         {
             string returnMessage = "";
@@ -22,12 +24,11 @@ namespace FTPClient.Commands
                 System.Console.Write("Enter the password: ");
                 password = FTPClient.Console.Console.ReadPassword();
                 System.Console.Write('\n');
-                
+
             }
-            
+
             try
             {
-                
                 FtpClient client = new FtpClient(address)
                 {
                     Credentials = new NetworkCredential(username, password)
@@ -64,15 +65,15 @@ namespace FTPClient.Commands
             return FTPClient.Client.clientObject.GetWorkingDirectory();
         }
 
-        public static string listRemote()
+        public static string lr()
         {
             string returnMessage = "";
             string res = "";
             try
             {
-                foreach (FtpListItem item in Client.clientObject.GetListing("/"))
+                foreach (FtpListItem item in Client.clientObject.GetListing(Client.clientObject.GetWorkingDirectory()))
                 {
-                    res += item.FullName + "\n";
+                    res += item.Name + "\n";
                 }
                 returnMessage = res;
             }
@@ -83,61 +84,30 @@ namespace FTPClient.Commands
             return returnMessage;
         }
 
-        public static string listLocal(string path)
+        public static string ls()
         {
             string returnMessage = "";
             try
             {
-                returnMessage = "The directories are:" + "\n";
-                var directories = System.IO.Directory.GetDirectories(path);
+                returnMessage = "The directories and files are:" + "\n";
+                var currentdir = System.IO.Directory.GetCurrentDirectory();
+                var directories = System.IO.Directory.GetDirectories(currentdir);
+                var files = System.IO.Directory.GetFiles(currentdir);
                 foreach (string item in directories)
                 {
-                    returnMessage = returnMessage + '\n' + item;
+                    var dir = new DirectoryInfo(item).Name;
+                    returnMessage = returnMessage + '\n' + dir;
                 }
-            }
-            catch (Exception e)
-            {
-                returnMessage = "Listing of local directories failed with exception";
-            }
-            return returnMessage;
-        }
-
-        public static string rnRemote(string target, string newName)
-        {
-            string returnMessage = "";
-            try
-            {
-                foreach (FtpListItem item in Client.clientObject.GetListing("/"))
+                foreach (string file in files)
                 {
-                    if (item.FullName == target)
-                    {
-                        Client.clientObject.Rename(target, newName);
-                    }
+                    returnMessage = returnMessage + '\n' + Path.GetFileName(file);
                 }
             }
             catch (Exception e)
             {
-                returnMessage = "File could not be renamed.";
+                returnMessage = "Listing of local directories and files failed with Exception";
             }
             return returnMessage;
         }
-
-        /*
-        public static string showPerms(string path)
-        {
-            string returnMessage = "";
-            int permissions;
-            try
-            {
-                permissions = Client.clientObject.GetChmod(path);
-                Console.Console.WriteToConsole("permissions are: " + permissions);
-            }
-            catch (Exception e)
-            {
-                returnMessage = "Couldnt check the permissions.";
-            }
-            return returnMessage;
-        }
-        */
     }
 }
