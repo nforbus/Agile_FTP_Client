@@ -6,15 +6,9 @@ using FluentFTP;
 namespace FTPClient.Commands
 {
     public static class DefaultCommands
-<<<<<<< HEAD
     {
         
         public static string Login(string address, string username="")
-=======
-    {
-
-        public static string Login(string address)
->>>>>>> Add list local directory command.
         {
             string returnMessage = "";
             string password = "";
