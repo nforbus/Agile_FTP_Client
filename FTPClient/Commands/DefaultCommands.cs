@@ -58,5 +58,10 @@ namespace FTPClient.Commands
             FTPClient.Console.Console.readPrompt = "FTP ("+ FTPClient.Client.clientObject.GetWorkingDirectory() + ")> ";
             return "";
         }
-    }
+
+        public static string pwd()
+        {
+            return FTPClient.Client.clientObject.GetWorkingDirectory();
+        }
+     }
 }
