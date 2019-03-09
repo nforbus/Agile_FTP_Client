@@ -1,17 +1,36 @@
 using System;
+using System.Net;
+using System.IO;
 using FluentFTP;
 
 namespace FTPClient.Commands
 {
     public static class DefaultCommands
-    {
-
-        public static string Login(string address)
+    { 
+        public static string Login(string address, string username="")
         {
             string returnMessage = "";
+            string password = "";
+            if (username == "")
+            {
+                username = "anonymous";
+                password = "anonymous";
+            }
+            else
+            {
+                System.Console.Write("Enter the password: ");
+                password = FTPClient.Console.Console.ReadPassword();
+                System.Console.Write('\n');
+                
+            }
+            
             try
             {
-                FtpClient client = new FtpClient(address);
+                
+                FtpClient client = new FtpClient(address)
+                {
+                    Credentials = new NetworkCredential(username, password)
+                };
 
                 client.Connect();
 
@@ -20,7 +39,7 @@ namespace FTPClient.Commands
                     Client.serverName = address;
                     Client.clientObject = client;
                     Client.viewingRemote = true;
-
+                    FTPClient.Console.Console.readPrompt = "FTP ("+ FTPClient.Client.clientObject.GetWorkingDirectory() + ")> ";
                     returnMessage = "Connected to " + address;
                 }
             }
@@ -50,6 +69,36 @@ namespace FTPClient.Commands
             }
             return returnMessage;
         }
+
+        public static string cd(string filePath)
+        {
+            FTPClient.Client.clientObject.SetWorkingDirectory(filePath);
+            FTPClient.Console.Console.readPrompt = "FTP ("+ FTPClient.Client.clientObject.GetWorkingDirectory() + ")> ";
+            return "";
+        }
+
+        public static string pwd()
+        {
+            return FTPClient.Client.clientObject.GetWorkingDirectory();
+        }
+
+        public static string lr()
+        {
+            string returnMessage = "";
+            string res = "";
+            try
+            {
+                foreach (FtpListItem item in Client.clientObject.GetListing(Client.clientObject.GetWorkingDirectory()))
+                {
+                    res += item.Name + "\n";
+                }
+                returnMessage = res;
+            }
+            catch (Exception e)
+            {
+                returnMessage = "Listing failed with Exception";
+            }
+            return returnMessage;
+        }
     }
 }
-    

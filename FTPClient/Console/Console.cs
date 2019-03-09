@@ -365,12 +365,41 @@ namespace FTPClient.Console
         }
 
 
-        const string _readPrompt = "console> ";
+        public static string readPrompt = "FTP> ";
         public static string ReadFromConsole(string promptMessage = "")
         {
             // Show a prompt, and get input:
-            System.Console.Write(_readPrompt + promptMessage);
+            System.Console.Write(readPrompt + promptMessage);
             return System.Console.ReadLine();
+        }
+
+        public static string ReadPassword()
+        {
+            string password = "";
+            do
+            {
+                ConsoleKeyInfo key = System.Console.ReadKey(true);
+                // Backspace Should Not Work
+                if (key.Key != ConsoleKey.Backspace && key.Key != ConsoleKey.Enter)
+                {
+                    password += key.KeyChar;
+                    System.Console.Write("*");
+                }
+                else
+                {
+                    if (key.Key == ConsoleKey.Backspace && password.Length > 0)
+                    {
+                        password = password.Substring(0, (password.Length - 1));
+                        System.Console.Write("\b \b");
+                    }
+                    else if(key.Key == ConsoleKey.Enter)
+                    {
+                        break;
+                    }
+                }
+            } while (true);
+
+            return password;
         }
     }
 }
