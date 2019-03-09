@@ -1,8 +1,5 @@
 using System;
-<<<<<<< HEAD
 using System.Net;
-=======
->>>>>>> c9ddd3f4cada6783ac6b3e4afea980797ebac0d3
 using System.IO;
 using FluentFTP;
 
