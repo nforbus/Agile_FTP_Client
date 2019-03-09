@@ -40,7 +40,7 @@ namespace FTPClient.Commands
                     Client.serverName = address;
                     Client.clientObject = client;
                     Client.viewingRemote = true;
-
+                    FTPClient.Console.Console.readPrompt = "FTP ("+ FTPClient.Client.clientObject.GetWorkingDirectory() + ")> ";
                     returnMessage = "Connected to " + address;
                 }
             }
@@ -50,6 +50,13 @@ namespace FTPClient.Commands
             }
 
             return returnMessage;
+        }
+
+        public static string cd(string filePath)
+        {
+            FTPClient.Client.clientObject.SetWorkingDirectory(filePath);
+            FTPClient.Console.Console.readPrompt = "FTP ("+ FTPClient.Client.clientObject.GetWorkingDirectory() + ")> ";
+            return "";
         }
     }
 }
