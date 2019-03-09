@@ -1,2 +1,4 @@
 FTPClient/bin/
 FTPClient/obj/
+/.vs
+/FTPClient/.vs/FTPClient
