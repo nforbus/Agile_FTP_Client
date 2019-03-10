@@ -281,20 +281,21 @@ namespace FTPClient.Commands
                 string text1 = System.IO.File.ReadAllText(@file1);
                 string text2 = System.IO.File.ReadAllText(@file2);
 
-                diff_match_patch dmp = new diff_match_patch();
-                List<Diff> diff = dmp.diff_main(text1, text2);
+                var dmp = DiffMatchPatchModule.Default;
+                List<DiffMatchPatch.Diff> diff = dmp.DiffMain(text1, text2);
+
                 // Result: [(-1, "Hell"), (1, "G"), (0, "o"), (1, "odbye"), (0, " World.")]
-                dmp.diff_cleanupSemantic(diff);
+                dmp.DiffCleanupSemantic(diff);
                 // Result: [(-1, "Hello"), (1, "Goodbye"), (0, " World.")]
                 for (int i = 0; i < diff.Count; i++)
                 {
-                    returnMessage += diff[i];
+                    returnMessage += diff[i] + " ";
                 }
 
             }
             catch (Exception e)
             {
-                returnMessage = "Download failed" + e;
+                returnMessage = "Failed";
             }
             return returnMessage;
         }
