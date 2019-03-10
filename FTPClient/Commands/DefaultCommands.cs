@@ -82,7 +82,7 @@ namespace FTPClient.Commands
             }
             catch (Exception e)
             {
-                returnMessage = "Server not connected Or Listing failed with Exception";
+                returnMessage = "Server not connected Or Listing failed with Exception" + e;
             }
             return returnMessage;
         }
@@ -251,7 +251,7 @@ namespace FTPClient.Commands
             catch (Exception e)
             {
              
-                returnMessage = "Failed with Exception";
+                returnMessage = "Server not connected or Failed with exception" + e;
             }
             return returnMessage;
         }
@@ -267,13 +267,13 @@ namespace FTPClient.Commands
             }
             catch (Exception e)
             {
-                returnMessage = "Failed with Exception";
+                returnMessage = "Server not connected or Failed with exception" + e;
             }
             return returnMessage;
         }
 
-        //Presently working for local files only
-        public static string diff(string file1, string file2)
+        //diff on files on local
+        public static string diffl(string file1, string file2)
         {
             string returnMessage = "";
             try
@@ -295,7 +295,7 @@ namespace FTPClient.Commands
             }
             catch (Exception e)
             {
-                returnMessage = "Failed";
+                returnMessage = "Server not connected or Failed with exception" + e;
             }
             return returnMessage;
         }
@@ -338,6 +338,75 @@ namespace FTPClient.Commands
             {
                 return "Server not connected or Failed with exception" + e;
             }
+        }
+
+        //diff on remote files
+        public static string diffr(string file1, string file2)
+        {
+            string returnMessage = "";
+            try
+            {
+                string name1 = DateTime.Now.ToString("yyyyMMddHHmmssfffff");
+                Client.clientObject.DownloadFile(name1, file1);
+                string name2 = DateTime.Now.ToString("yyyyMMddHHmmssfffff");
+                Client.clientObject.DownloadFile(name2, file2);
+                
+                string text1 = System.IO.File.ReadAllText(name1);
+                string text2 = System.IO.File.ReadAllText(name2);
+
+                var dmp = DiffMatchPatchModule.Default;
+                List<DiffMatchPatch.Diff> diff = dmp.DiffMain(text1, text2);
+
+                // Result: [(-1, "Hell"), (1, "G"), (0, "o"), (1, "odbye"), (0, " World.")]
+                dmp.DiffCleanupSemantic(diff);
+                // Result: [(-1, "Hello"), (1, "Goodbye"), (0, " World.")]
+                for (int i = 0; i < diff.Count; i++)
+                {
+                    returnMessage += diff[i] + " ";
+                }
+
+                File.Delete(name1);
+                File.Delete(name2);
+            }
+            catch (Exception e)
+            {
+                returnMessage = "Server not connected or Failed with exception" + e;
+            }
+
+            return returnMessage;
+        }
+
+        //diff on file on remote and local
+        public static string diff(string file1, string file2)
+        {
+            string returnMessage = "";
+            try
+            {
+                string name1 = DateTime.Now.ToString("yyyyMMddHHmmssfffff");
+                Client.clientObject.DownloadFile(name1, file1);
+
+                string text1 = System.IO.File.ReadAllText(name1);
+                string text2 = System.IO.File.ReadAllText(file2);
+
+                var dmp = DiffMatchPatchModule.Default;
+                List<DiffMatchPatch.Diff> diff = dmp.DiffMain(text1, text2);
+
+                // Result: [(-1, "Hell"), (1, "G"), (0, "o"), (1, "odbye"), (0, " World.")]
+                dmp.DiffCleanupSemantic(diff);
+                // Result: [(-1, "Hello"), (1, "Goodbye"), (0, " World.")]
+                for (int i = 0; i < diff.Count; i++)
+                {
+                    returnMessage += diff[i] + " ";
+                }
+
+                File.Delete(name1);
+            }
+            catch (Exception e)
+            {
+                returnMessage = "Server not connected or Failed with exception" + e;
+            }
+
+            return returnMessage;
         }
     }
 }
