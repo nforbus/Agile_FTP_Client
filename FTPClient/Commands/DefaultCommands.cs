@@ -3,7 +3,6 @@ using System.Net;
 using System.Security.Cryptography;
 using System.IO;
 using System.Linq;
-using System.IO;
 using FluentFTP;
 
 namespace FTPClient.Commands
@@ -89,18 +88,20 @@ namespace FTPClient.Commands
             string returnMessage = "";
             try
             {
-                returnMessage = "The directories and files are:" + "\n";
+                returnMessage = "";
                 var currentdir = System.IO.Directory.GetCurrentDirectory();
                 var directories = System.IO.Directory.GetDirectories(currentdir);
                 var files = System.IO.Directory.GetFiles(currentdir);
                 foreach (string item in directories)
                 {
-                    var dir = new DirectoryInfo(item).Name;
-                    returnMessage = returnMessage + '\n' + dir;
+                    var dir = new DirectoryInfo(item);
+                    returnMessage += "DIR\t" + dir.Name + "\t Modified :"+dir.LastWriteTime + '\n';
                 }
                 foreach (string file in files)
                 {
-                    returnMessage = returnMessage + '\n' + Path.GetFileName(file);
+                    var time = File.GetLastWriteTime(file);
+                    var size = Path.GetFileName(file).Length;
+                    returnMessage += "FILE\t"+ Path.GetFileName(file) + "\t("+size +")bytes" + "\t Modified :" + time +'\n';
                 }
             }
             catch (Exception e)
@@ -201,6 +202,27 @@ namespace FTPClient.Commands
             catch (Exception e)
             {
                 returnMessage = "Download failed" + e;
+            }
+            return returnMessage;
+        }
+        public static string findl(string filename)
+        {
+            string returnMessage = "";
+            try
+            {
+                foreach (string file in Directory.EnumerateFiles(System.IO.Directory.GetCurrentDirectory(), "*.*", SearchOption.AllDirectories))
+                {
+                    if (filename == Path.GetFileName(file))
+                    {
+                        var time = File.GetLastWriteTime(file);
+                        var size = Path.GetFileName(file).Length;
+                        returnMessage += "FILE\t" + Path.GetFileName(file) + "\t(" + size + ")bytes" + "\t Modified :" + time + '\n'; ;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                returnMessage = "The File does not exist";
             }
             return returnMessage;
         }
