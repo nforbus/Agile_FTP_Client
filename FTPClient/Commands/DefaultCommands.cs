@@ -110,6 +110,66 @@ namespace FTPClient.Commands
             return returnMessage;
         }
 
+        //Uses absoulute path for target and name changes
+        public static string mv(string target, string name)
+        {
+            string returnMessage = "";
+            string res = "";
+            try
+            {
+                foreach (FtpListItem item in Client.clientObject.GetListing(Client.clientObject.GetWorkingDirectory()))
+                {
+                    if(item.FullName == target)
+                    {
+                        Client.clientObject.Rename(target, name);
+                    }
+                }
+                returnMessage = res;
+            }
+            catch (Exception e)
+            {
+                returnMessage = "Rename failed with exception";
+            }
+            return returnMessage;
+        }
+
+        //Uses absolute path for target and name changes
+        public static string mvLocal(string target, string name)
+        {
+            string returnMessage = "";
+            string res = "";
+            try
+            {
+                var currentdir = System.IO.Directory.GetCurrentDirectory();
+                var directories = System.IO.Directory.GetDirectories(currentdir);
+                var files = System.IO.Directory.GetFiles(currentdir);
+
+                string qualifiedTarget = currentdir + "\\" + target;
+                string qualifiedName = currentdir + "\\" + name;
+
+                foreach (string item in directories)
+                {
+                    if (item == qualifiedTarget)
+                    {
+                        Directory.Move(qualifiedTarget, qualifiedName);
+                    }
+                }
+                foreach (string file in files)
+                {
+                    if (file == qualifiedTarget)
+                    {
+                        File.Move(qualifiedTarget, qualifiedName);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.Console.WriteToConsole(e.ToString());
+                returnMessage = "Rename failed with exception";
+            }
+            return returnMessage;
+        }
+
         public static string upload(string source, string destination)
         {
             string returnMessage = "";
