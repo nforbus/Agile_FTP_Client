@@ -84,7 +84,7 @@ namespace FTPClient.Commands
             return returnMessage;
         }
 
-        //create directory
+        //Create directory
         public static string mkdir(string path)
         {
             string returnMessage = "";
@@ -101,7 +101,7 @@ namespace FTPClient.Commands
             return returnMessage;
         }
 
-        //delete directory 
+        //Delete directory 
         public static string rm(string path)
         {
             string returnMessage = "";
@@ -117,7 +117,8 @@ namespace FTPClient.Commands
             return returnMessage;
         }
 
-        public static string setPermission(string path,int permission)
+        //Change Permissions
+        public static string chmod(string path,int permission)
         {
             string returnMessage = "";
             try
@@ -132,7 +133,7 @@ namespace FTPClient.Commands
             return returnMessage;
         }
 
-        //resume file transfer
+        //Resume file transfer
         public static string resumeFileTransfer(string path,string rpath)
         {
             string returnMessage = "";
