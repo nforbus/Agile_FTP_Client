@@ -83,5 +83,54 @@ namespace FTPClient.Commands
             }
             return returnMessage;
         }
+
+        //create directory
+        public static string mkdir(string path)
+        {
+            string returnMessage = "";
+            try
+            {
+                Client.clientObject.CreateDirectory(path);
+                Client.clientObject.SetFilePermissions(path, 755);
+                returnMessage = "Created directory: " + path;
+            }
+            catch (Exception e)
+            {
+                returnMessage = e.Message;
+            }
+            return returnMessage;
+        }
+
+        //delete directory 
+        public static string rm(string path)
+        {
+            string returnMessage = "";
+            try 
+            {
+                Client.clientObject.DeleteDirectory(path);
+                returnMessage = "Deleted directory" + path;
+            }
+            catch (Exception e)
+            {
+                returnMessage = e.Message;
+            }
+            return returnMessage;
+        }
+
+        //resume file transfer
+        public static string resumeFileTransfer(string path,string rpath)
+        {
+            string returnMessage = "";
+            try
+            {
+                Client.clientObject.UploadFile(path,rpath, FtpExists.Append);
+                returnMessage = "Complete Transfer: File uploaded to: " + rpath;
+            }
+            catch (Exception e)
+            {
+                returnMessage = e.Message;
+            }
+            return returnMessage;
+        }
     }
 }
