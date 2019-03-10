@@ -117,6 +117,21 @@ namespace FTPClient.Commands
             return returnMessage;
         }
 
+        public static string setPermission(string path,int permission)
+        {
+            string returnMessage = "";
+            try
+            { 
+                Client.clientObject.SetFilePermissions(path, permission);
+                returnMessage = "Permission of file/folder: " + path +" set to :"+ permission;
+            }
+            catch (Exception e)
+            {
+                returnMessage = e.Message;
+            }
+            return returnMessage;
+        }
+
         //resume file transfer
         public static string resumeFileTransfer(string path,string rpath)
         {
