@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Security.Cryptography;
 using System.IO;
@@ -221,6 +222,7 @@ namespace FTPClient.Commands
                         var time = File.GetLastWriteTime(file);
                         var size = Path.GetFileName(file).Length;
                         returnMessage += "FILE\t" + Path.GetFileName(file) + "\t(" + size + ")bytes" + "\t Modified :" + time + '\n';
+
                     }
                 }
             }
@@ -228,6 +230,7 @@ namespace FTPClient.Commands
             {
                 returnMessage = "The File does not exist";
             }
+
             return returnMessage;
         }
 
@@ -277,7 +280,7 @@ namespace FTPClient.Commands
             {
                 string text1 = System.IO.File.ReadAllText(@file1);
                 string text2 = System.IO.File.ReadAllText(@file2);
-               
+
                 diff_match_patch dmp = new diff_match_patch();
                 List<Diff> diff = dmp.diff_main(text1, text2);
                 // Result: [(-1, "Hell"), (1, "G"), (0, "o"), (1, "odbye"), (0, " World.")]
@@ -294,6 +297,19 @@ namespace FTPClient.Commands
                 returnMessage = "Download failed" + e;
             }
             return returnMessage;
+        }
+
+        public static string uploadMultiple(string files, string destination)
+        {
+            List<string> args = FTPClient.Console.Console.SeparateArguments(files);
+
+            foreach (var arg in args)
+            {
+                System.Console.WriteLine(arg);
+            }
+            
+            int numberOfFiles = FTPClient.Client.clientObject.UploadFiles(args, destination);
+            return numberOfFiles + " uploaded.";
         }
     }
 }
