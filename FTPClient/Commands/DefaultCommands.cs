@@ -3,6 +3,9 @@ using System.Net;
 using System.Security.Cryptography;
 using System.IO;
 using System.Linq;
+using System.IO;
+using DiffMatchPatch;
+using System.Collections.Generic;
 using FluentFTP;
 
 namespace FTPClient.Commands
@@ -51,7 +54,7 @@ namespace FTPClient.Commands
 
             return returnMessage;
         }
-
+        
         public static string cd(string filePath)
         {
             FTPClient.Client.clientObject.SetWorkingDirectory(filePath);
@@ -72,13 +75,13 @@ namespace FTPClient.Commands
             {
                 foreach (FtpListItem item in Client.clientObject.GetListing(Client.clientObject.GetWorkingDirectory()))
                 {
-                    res += item.Name + "\n";
+                    res += item + "\n";
                 }
                 returnMessage = res;
             }
             catch (Exception e)
             {
-                returnMessage = "Listing failed with Exception";
+                returnMessage = "Server not connected Or Listing failed with Exception";
             }
             return returnMessage;
         }
@@ -205,6 +208,7 @@ namespace FTPClient.Commands
             }
             return returnMessage;
         }
+
         public static string findl(string filename)
         {
             string returnMessage = "";
@@ -216,13 +220,78 @@ namespace FTPClient.Commands
                     {
                         var time = File.GetLastWriteTime(file);
                         var size = Path.GetFileName(file).Length;
-                        returnMessage += "FILE\t" + Path.GetFileName(file) + "\t(" + size + ")bytes" + "\t Modified :" + time + '\n'; ;
+                        returnMessage += "FILE\t" + Path.GetFileName(file) + "\t(" + size + ")bytes" + "\t Modified :" + time + '\n';
                     }
                 }
             }
             catch (Exception e)
             {
                 returnMessage = "The File does not exist";
+            }
+            return returnMessage;
+        }
+
+        //find files on server 
+        public static string findr(string filename)
+        {
+            string returnMessage = "";
+            try
+            {
+                foreach (FtpListItem item in Client.clientObject.GetListing(Client.clientObject.GetWorkingDirectory(), FtpListOption.Recursive))
+                {
+                    if (filename == item.Name)
+                    {
+                        returnMessage += item + "\n";
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+             
+                returnMessage = "Failed with Exception";
+            }
+            return returnMessage;
+        }
+
+        //disconnect from server 
+        public static string exit()
+        {
+            string returnMessage = "";
+            try
+            {
+                Client.serverName = null;
+                Client.clientObject = null;
+            }
+            catch (Exception e)
+            {
+                returnMessage = "Failed with Exception";
+            }
+            return returnMessage;
+        }
+
+        //Presently working for local files only
+        public static string diff(string file1, string file2)
+        {
+            string returnMessage = "";
+            try
+            {
+                string text1 = System.IO.File.ReadAllText(@file1);
+                string text2 = System.IO.File.ReadAllText(@file2);
+               
+                diff_match_patch dmp = new diff_match_patch();
+                List<Diff> diff = dmp.diff_main(text1, text2);
+                // Result: [(-1, "Hell"), (1, "G"), (0, "o"), (1, "odbye"), (0, " World.")]
+                dmp.diff_cleanupSemantic(diff);
+                // Result: [(-1, "Hello"), (1, "Goodbye"), (0, " World.")]
+                for (int i = 0; i < diff.Count; i++)
+                {
+                    returnMessage += diff[i];
+                }
+
+            }
+            catch (Exception e)
+            {
+                returnMessage = "Download failed" + e;
             }
             return returnMessage;
         }
