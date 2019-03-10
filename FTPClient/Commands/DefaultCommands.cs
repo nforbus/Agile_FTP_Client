@@ -302,15 +302,42 @@ namespace FTPClient.Commands
 
         public static string uploadMultiple(string files, string destination)
         {
-            List<string> args = FTPClient.Console.Console.SeparateArguments(files);
-
-            foreach (var arg in args)
+            try
             {
-                System.Console.WriteLine(arg);
+                List<string> args = FTPClient.Console.Console.SeparateArguments(files);
+
+                foreach (var arg in args)
+                {
+                    System.Console.WriteLine(arg);
+                }
+
+                int numberOfFiles = FTPClient.Client.clientObject.UploadFiles(args, destination);
+                return numberOfFiles + " uploaded.";
             }
-            
-            int numberOfFiles = FTPClient.Client.clientObject.UploadFiles(args, destination);
-            return numberOfFiles + " uploaded.";
+
+            catch (Exception e)
+            {
+                return "Server not connected or Failed with exception" + e;
+            }
+        }
+        public static string downloadMultiple( string destination, string files)
+        {
+            try
+            {
+                List<string> args = FTPClient.Console.Console.SeparateArguments(files);
+
+                foreach (var arg in args)
+                {
+                    System.Console.WriteLine(arg);
+                }
+
+                int numberOfFiles = FTPClient.Client.clientObject.DownloadFiles(destination, args);
+                return numberOfFiles + " downloaded.";
+            }
+            catch(Exception e)
+            {
+                return "Server not connected or Failed with exception" + e;
+            }
         }
     }
 }
