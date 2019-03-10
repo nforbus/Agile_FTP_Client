@@ -215,8 +215,7 @@ namespace FTPClient.Commands
             string returnMessage = "";
             try
             {
-                foreach (string file in Directory.EnumerateFiles(System.IO.Directory.GetCurrentDirectory(), "*.*",
-                    SearchOption.AllDirectories))
+                foreach (string file in Directory.EnumerateFiles(System.IO.Directory.GetCurrentDirectory(), "*.*", SearchOption.AllDirectories))
                 {
                     if (filename == Path.GetFileName(file))
                     {
