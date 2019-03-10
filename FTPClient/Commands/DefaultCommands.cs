@@ -312,5 +312,17 @@ namespace FTPClient.Commands
             int numberOfFiles = FTPClient.Client.clientObject.UploadFiles(args, destination);
             return numberOfFiles + " uploaded.";
         }
+        public static string downloadMultiple( string destination, string files)
+        {
+            List<string> args = FTPClient.Console.Console.SeparateArguments(files);
+
+            foreach (var arg in args)
+            {
+                System.Console.WriteLine(arg);
+            }
+
+            int numberOfFiles = FTPClient.Client.clientObject.DownloadFiles(destination,args);
+            return numberOfFiles + " downloaded.";
+        }
     }
 }
