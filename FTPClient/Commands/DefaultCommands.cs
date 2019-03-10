@@ -221,7 +221,7 @@ namespace FTPClient.Commands
                     {
                         var time = File.GetLastWriteTime(file);
                         var size = Path.GetFileName(file).Length;
-                        returnMessage += "FILE\t" + Path.GetFileName(file) + "\t(" + size + ")bytes" + "\t Modified :" + time + '\n';
+                        returnMessage += "FILE\t" + Path.GetFileName(file) + "\t(" + size + ")bytes" + "\t Modified :" + time + " FilePath:" + Path.GetFullPath(file) +'\n';
 
                     }
                 }
@@ -244,7 +244,7 @@ namespace FTPClient.Commands
                 {
                     if (filename == item.Name)
                     {
-                        returnMessage += item + "\n";
+                        returnMessage += item + " FilePath:"+ item.FullName +"\n";
                     }
                 }
             }
