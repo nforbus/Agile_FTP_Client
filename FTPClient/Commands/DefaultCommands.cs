@@ -102,17 +102,17 @@ namespace FTPClient.Commands
         }
 
         //Delete directory 
-        public static string rm(string path)
+        public static string rmdir(string path)
         {
             string returnMessage = "";
             try 
             {
                 Client.clientObject.DeleteDirectory(path);
-                returnMessage = "Deleted directory" + path;
+                returnMessage = "Deleted directory: " + path;
             }
             catch (Exception e)
             {
-                returnMessage = e.Message;
+                returnMessage = e.ToString();
             }
             return returnMessage;
         }
@@ -121,26 +121,12 @@ namespace FTPClient.Commands
         public static string chmod(string path,int permission)
         {
             string returnMessage = "";
+            string npath;
             try
             { 
-                Client.clientObject.SetFilePermissions(path, permission);
+                npath = Path.Combine(Client.clientObject.GetWorkingDirectory(), path);
+                Client.clientObject.SetFilePermissions(npath, permission);
                 returnMessage = "Permission of file/folder: " + path +" set to :"+ permission;
-            }
-            catch (Exception e)
-            {
-                returnMessage = e.Message;
-            }
-            return returnMessage;
-        }
-
-        //Resume file transfer
-        public static string resumeFileTransfer(string path,string rpath)
-        {
-            string returnMessage = "";
-            try
-            {
-                Client.clientObject.UploadFile(path,rpath, FtpExists.Append);
-                returnMessage = "Complete Transfer: File uploaded to: " + rpath;
             }
             catch (Exception e)
             {
