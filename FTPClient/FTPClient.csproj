@@ -6,6 +6,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="Diff.Match.Patch" Version="2.1.0" />
       <PackageReference Include="FluentFTP" Version="21.0.0" />
     </ItemGroup>
 
