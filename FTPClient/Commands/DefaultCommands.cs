@@ -27,9 +27,7 @@ namespace FTPClient.Commands
                 System.Console.Write("Enter the password: ");
                 password = FTPClient.Console.Console.ReadPassword();
                 System.Console.Write('\n');
-
             }
-
             try
             {
                 FtpClient client = new FtpClient(address)
@@ -55,7 +53,7 @@ namespace FTPClient.Commands
 
             return returnMessage;
         }
-        
+
         public static string cd(string filePath)
         {
             FTPClient.Client.clientObject.SetWorkingDirectory(filePath);
@@ -256,6 +254,23 @@ namespace FTPClient.Commands
             return returnMessage;
         }
 
+        //Create directory
+        public static string mkdir(string path)
+        {
+            string returnMessage = "";
+            try
+            {
+                Client.clientObject.CreateDirectory(path);
+                Client.clientObject.SetFilePermissions(path, 755);
+                returnMessage = "Created directory: " + path;
+            }
+            catch (Exception e)
+            {
+                returnMessage = e.Message;
+            }
+            return returnMessage;
+        }
+
         //disconnect from server 
         public static string exit()
         {
@@ -300,6 +315,40 @@ namespace FTPClient.Commands
             return returnMessage;
         }
 
+        //Delete directory 
+        public static string rmdir(string path)
+        {
+            string returnMessage = "";
+            try 
+            {
+                Client.clientObject.DeleteDirectory(path);
+                returnMessage = "Deleted directory: " + path;
+            }
+            catch (Exception e)
+            {
+                returnMessage = e.ToString();
+            }
+            return returnMessage;
+        }
+
+        //Change Permissions
+        public static string chmod(string path, int permission)
+        {
+            string returnMessage = "";
+            string npath;
+            try
+            {
+                npath = Path.Combine(Client.clientObject.GetWorkingDirectory(), path);
+                Client.clientObject.SetFilePermissions(npath, permission);
+                returnMessage = "Permission of file/folder: " + path + " set to :" + permission;
+            }
+            catch (Exception e)
+            {
+                returnMessage = e.Message;
+            }
+            return returnMessage;
+        }
+
         public static string uploadMultiple(string files, string destination)
         {
             try
@@ -320,6 +369,7 @@ namespace FTPClient.Commands
                 return "Server not connected or Failed with exception" + e;
             }
         }
+
         public static string downloadMultiple( string destination, string files)
         {
             try
@@ -372,7 +422,6 @@ namespace FTPClient.Commands
             {
                 returnMessage = "Server not connected or Failed with exception" + e;
             }
-
             return returnMessage;
         }
 
@@ -405,7 +454,6 @@ namespace FTPClient.Commands
             {
                 returnMessage = "Server not connected or Failed with exception" + e;
             }
-
             return returnMessage;
         }
     }
