@@ -456,5 +456,28 @@ namespace FTPClient.Commands
             }
             return returnMessage;
         }
+
+        //Prints history of command usage
+        public static string history()
+        {
+            string readText = File.ReadAllText("./history.txt");
+            return readText;
+        }
+
+        //Deletes file from remote server
+        public static string rmr(string fileToDelete)
+        {
+            string returnMessage = "";
+            try
+            {
+                Client.clientObject.DeleteFile(fileToDelete);
+                returnMessage = "Deleted file: " + fileToDelete;
+            }
+            catch (Exception e)
+            {
+                returnMessage = e.Message;
+            }
+            return returnMessage;
+        }
     }
 }
