@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -40,6 +41,10 @@ namespace FTPClient.Console
                 // Add the dictionary of methods for the current class into a dictionary of command classes:
                 _commandLibraries.Add(commandClass.Name, methodDictionary);
             }
+
+            //Open log file to store history of command line usage
+            FileStream writeToHistory;
+            StreamWriter writer = null;
             
             while (true)
             {  
@@ -50,6 +55,12 @@ namespace FTPClient.Console
                 {
                     // Create a ConsoleCommand instance:
                     var cmd = new ConsoleCommand(consoleInput);
+
+                    //Write command history to log file
+                    writeToHistory = new FileStream("./history.txt", FileMode.OpenOrCreate, FileAccess.Write);
+                    writer = new StreamWriter(writeToHistory);
+                    writer.WriteLine(consoleInput);
+                    writer.Close();
 
                     // Execute the command:
                     string result = Execute(cmd);
