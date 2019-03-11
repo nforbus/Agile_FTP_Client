@@ -465,9 +465,19 @@ namespace FTPClient.Commands
         }
 
         //Deletes file from remote server
-        public static string rmr()
+        public static string rmr(string fileToDelete)
         {
-            return null;
+            string returnMessage = "";
+            try
+            {
+                Client.clientObject.DeleteFile(fileToDelete);
+                returnMessage = "Deleted file: " + fileToDelete;
+            }
+            catch (Exception e)
+            {
+                returnMessage = e.Message;
+            }
+            return returnMessage;
         }
     }
 }
