@@ -422,10 +422,7 @@ namespace FTPClient.Console
                 Regex.Split(args, 
                     "(?<=^[^\']*(?:\'[^\']*\'[^\']*)*) (?=(?:[^\']*\'[^\']*\')*[^\']*$)");
 
-            //foreach (var item in stringArray)
-            //{
-                //System.Console.WriteLine("stringArray " + item);
-            //}
+            
   
             List<string> arguments = new List<string>();
             for (int i = 0; i < stringArray.Length; i++)
