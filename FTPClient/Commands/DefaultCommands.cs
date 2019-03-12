@@ -283,6 +283,7 @@ namespace FTPClient.Commands
             {
                 Client.serverName = null;
                 Client.clientObject = null;
+                FTPClient.Console.Console.readPrompt = "FTP>";
             }
             catch (Exception e)
             {
@@ -359,10 +360,10 @@ namespace FTPClient.Commands
             {
                 List<string> args = FTPClient.Console.Console.SeparateArguments(files);
 
-                foreach (var arg in args)
-                {
-                    System.Console.WriteLine(arg);
-                }
+                //foreach (var arg in args)
+                //{
+                    //System.Console.WriteLine(arg);
+                //}
 
                 int numberOfFiles = FTPClient.Client.clientObject.UploadFiles(args, destination);
                 return numberOfFiles + " uploaded.";
@@ -380,10 +381,10 @@ namespace FTPClient.Commands
             {
                 List<string> args = FTPClient.Console.Console.SeparateArguments(files);
 
-                foreach (var arg in args)
-                {
-                    System.Console.WriteLine(arg);
-                }
+                //foreach (var arg in args)
+                //{
+                    //System.Console.WriteLine(arg);
+                //}
 
                 int numberOfFiles = FTPClient.Client.clientObject.DownloadFiles(destination, args);
                 return numberOfFiles + " downloaded.";

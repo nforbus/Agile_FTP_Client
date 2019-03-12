@@ -416,16 +416,16 @@ namespace FTPClient.Console
 
         public static List<string> SeparateArguments(string args)
         {
-            System.Console.WriteLine("Args: " + args);
+           // System.Console.WriteLine("Args: " + args);
             // Ugly regex to split string on spaces, but preserve quoted text intact:
             var stringArray = 
                 Regex.Split(args, 
                     "(?<=^[^\']*(?:\'[^\']*\'[^\']*)*) (?=(?:[^\']*\'[^\']*\')*[^\']*$)");
 
-            foreach (var item in stringArray)
-            {
-                System.Console.WriteLine("stringArray " + item);
-            }
+            //foreach (var item in stringArray)
+            //{
+                //System.Console.WriteLine("stringArray " + item);
+            //}
   
             List<string> arguments = new List<string>();
             for (int i = 0; i < stringArray.Length; i++)
