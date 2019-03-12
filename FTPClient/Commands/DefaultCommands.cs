@@ -7,6 +7,7 @@ using System.Linq;
 using System.IO;
 using DiffMatchPatch;
 using System.Collections.Generic;
+using System.Globalization;
 using FluentFTP;
 
 namespace FTPClient.Commands
@@ -17,7 +18,7 @@ namespace FTPClient.Commands
         {
             string returnMessage = "";
             string password = "";
-            if (username == "")
+            if (username == "" | username == "anonymous")
             {
                 username = "anonymous";
                 password = "anonymous";
@@ -44,6 +45,7 @@ namespace FTPClient.Commands
                     Client.viewingRemote = true;
                     FTPClient.Console.Console.readPrompt = "FTP ("+ FTPClient.Client.clientObject.GetWorkingDirectory() + ")> ";
                     returnMessage = "Connected to " + address;
+                    new SavedConnection(address, username).saveConnection();
                 }
             }
             catch (Exception e)
@@ -479,6 +481,7 @@ namespace FTPClient.Commands
             }
             return returnMessage;
         }
+      
         public static string help()
         {
             string returnMessage = "";
@@ -514,6 +517,30 @@ namespace FTPClient.Commands
                 returnMessage = e.ToString();
             }
             return returnMessage;
+        }
+
+        public static string saved()
+        {
+            List<SavedConnection> savedConns = SavedConnection.getSavedConnections();
+
+            if (savedConns.Count > 0)
+            {
+                int counter = 1;
+                foreach (var connection in savedConns)
+                {
+                    System.Console.WriteLine("[" + counter + "] " + connection.ToString());
+                    counter += 1;
+                }
+
+                System.Console.Write("Enter the saved connection you want to use: ");
+                int index = Convert.ToInt32(System.Console.ReadLine());
+                System.Console.WriteLine("Logging into: " + savedConns[index-1]);
+                return Login(savedConns[index - 1].address, savedConns[index - 1].username);
+            }
+            else
+            {
+                return "There is no saved information. Please use the Login command to connect to a server.";
+            }
         }
     }
 }
