@@ -80,7 +80,7 @@ namespace FTPClient.Commands
             }
             catch (Exception e)
             {
-                returnMessage = "Server not connected Or Listing failed with Exception" + e;
+                returnMessage = "Server not connected Or Listing failed with Exception";
             }
             return returnMessage;
         }
@@ -476,6 +476,23 @@ namespace FTPClient.Commands
             catch (Exception e)
             {
                 returnMessage = e.Message;
+            }
+            return returnMessage;
+        }
+        public static string help()
+        {
+            string returnMessage = "";
+            try
+            {
+                string[] lines = System.IO.File.ReadAllLines(@"./help.txt");
+                foreach (string line in lines)
+                {
+                    returnMessage += line + "\n";
+                }
+            }
+            catch (Exception e)
+            {
+                returnMessage = e.ToString();
             }
             return returnMessage;
         }
