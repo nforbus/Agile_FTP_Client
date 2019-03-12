@@ -82,7 +82,7 @@ namespace FTPClient.Commands
             }
             catch (Exception e)
             {
-                returnMessage = "Server not connected Or Listing failed with Exception" + e;
+                returnMessage = "Server not connected Or Listing failed with Exception";
             }
             return returnMessage;
         }
@@ -478,6 +478,43 @@ namespace FTPClient.Commands
             catch (Exception e)
             {
                 returnMessage = e.Message;
+            }
+            return returnMessage;
+        }
+      
+        public static string help()
+        {
+            string returnMessage = "";
+            string helpstr = "Login <ftpserver> <username> when prompted <password>                        --  To login into ftpserver using the username and password\n" +
+            "cd  <directory name>                                                         --  To change directory on remote\n" +
+            "pwd                                                                          --  To display path of working directory\n" +
+            "ls                                                                           --  To display files and directories in current directory of local\n" +
+            "lr                                                                           --  To display files and directories in current directory of remote\n" +
+            "findl <filename>                                                             --  To find a file with given filename on local \n" +
+            "findr <filename>                                                             --  To find a file with given filename on remote \n" +
+            "mvLocal <currentfile> <newfile>                                              --  Takes newfile name and replaces currentifle with it - this is for local\n" +
+            "mv <currentfile> <newfile>                                                   --  Takes newfile name and replaces currentfile with it - this is for remote\n" +
+            "mkdir <path>                                                                 --  Creates a directory on the given path\n" +
+            "rm <path>                                                                    --  Delete a directory on the given path\n" +
+            "chmod <path> <permissions>                                                   --  Sets permissions       \n" +
+            "upload <local path with filename> <remote path with filename>                --  Uploads a file from local to remote with the name as filename\n" +
+            "download <local path with filename> <remote path with filename>              --  Downloads a file from remote to local with the name as filename\n" +
+            "uploadMultiple <\"file1 file2 'filename with spaces' file4\"> <destination>    --  Uploads multiple files given as args on remote at the destination location provided by user\n" +
+            "downloadMultiple <destination> <\"file1 file2 'filename with spaces' file4\">  --  Downloads multiple files given as args from remote, to the destination location on local\n" +
+            "copyDir <source path>                                                        --  Copies the directory from the provided source path to current working directory on remote \n" +
+            "diffl <filepath1> <filepath2>                                                --  Difference of files on local\n" +
+            "diffr <filepath1> <filepath2>                                                --  Difference of files on remote\n" +
+            "diff  <filepath1> <filepath2>                                                --  Difference of files on remote and local\n" +
+            "history                                                                      --  Prints history of command lines\n" +
+            "rmr <filepath>                                                               --  Removes file at filepath location\n" +
+            "exit                                                                         --  To disconnect from server\n";
+            try
+            {
+                System.Console.WriteLine(@helpstr);
+            }
+            catch (Exception e)
+            {
+                returnMessage = e.ToString();
             }
             return returnMessage;
         }
