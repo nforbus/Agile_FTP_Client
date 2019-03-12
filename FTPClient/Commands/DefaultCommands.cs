@@ -197,9 +197,10 @@ namespace FTPClient.Commands
         public static string download(string source, string destination)
         {
             string returnMessage = "";
+
             try
             {
-                Client.clientObject.DownloadFile(source, destination);
+               FTPClient.Client.clientObject.DownloadFile(destination, source);
                 returnMessage = "Download succesful";
 
             }
@@ -209,6 +210,7 @@ namespace FTPClient.Commands
             }
             return returnMessage;
         }
+
 
         public static string findl(string filename)
         {
@@ -479,9 +481,33 @@ namespace FTPClient.Commands
             {
                 returnMessage = e.Message;
             }
+
             return returnMessage;
         }
       
+        public static string copyDir(string source)
+         {
+            string returnMessage = "";
+
+            try
+            {
+                foreach (string file in Directory.EnumerateFiles(Path.GetFullPath(source), "*.*", SearchOption.AllDirectories))
+                {
+
+                    string relativePath = Path.GetRelativePath(source, file);
+                    System.Console.WriteLine("Copying  "+ file);
+                    FTPClient.Client.clientObject.UploadFile(file, relativePath, createRemoteDir: true);
+                }
+                returnMessage = "Copy succesful";
+
+            }
+            catch (Exception e)
+            {
+                System.Console.WriteLine("Exception " + e);
+            }
+             return returnMessage;
+        }
+
         public static string help()
         {
             string returnMessage = "";
