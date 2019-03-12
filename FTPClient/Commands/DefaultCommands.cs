@@ -483,7 +483,8 @@ namespace FTPClient.Commands
             return returnMessage;
         }
 
-        public static string copyDir(string source)         {
+        public static string copyDir(string source)
+         {
             string returnMessage = "";
 
             try
@@ -498,14 +499,11 @@ namespace FTPClient.Commands
                 returnMessage = "Copy succesful";
 
             }
-
             catch (Exception e)
             {
                 System.Console.WriteLine("Exception " + e);
             }
-
-            
-            return returnMessage;
+             return returnMessage;
         }
     }
 }
