@@ -2,3 +2,5 @@ FTPClient/bin/
 FTPClient/obj/
 .DS_Store
 .vs/
+history.txt
+saved.txt
