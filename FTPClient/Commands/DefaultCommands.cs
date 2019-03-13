@@ -1,13 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Security.Cryptography;
-using System.IO;
-using System.Linq;
 using System.IO;
 using DiffMatchPatch;
-using System.Collections.Generic;
-using System.Globalization;
 using FluentFTP;
 
 namespace FTPClient.Commands
@@ -50,7 +45,7 @@ namespace FTPClient.Commands
             }
             catch (Exception e)
             {
-                returnMessage = "Connection failed with Exception";
+                returnMessage = "Connection failed with Exception:" + e;
             }
 
             return returnMessage;
@@ -82,7 +77,7 @@ namespace FTPClient.Commands
             }
             catch (Exception e)
             {
-                returnMessage = "Server not connected Or Listing failed with Exception";
+                returnMessage = "Server not connected Or Listing failed with Exception:" + e;
             }
             return returnMessage;
         }
@@ -110,7 +105,7 @@ namespace FTPClient.Commands
             }
             catch (Exception e)
             {
-                returnMessage = "Listing of local directories and files failed with Exception";
+                returnMessage = "Listing of local directories and files failed with Exception: " + e;
             }
             return returnMessage;
         }
@@ -133,7 +128,7 @@ namespace FTPClient.Commands
             }
             catch (Exception e)
             {
-                returnMessage = "Rename failed with exception";
+                returnMessage = "Rename failed with exception: " + e;
             }
             return returnMessage;
         }
@@ -142,7 +137,6 @@ namespace FTPClient.Commands
         public static string mvLocal(string target, string name)
         {
             string returnMessage = "";
-            string res = "";
             try
             {
                 var currentdir = System.IO.Directory.GetCurrentDirectory();
@@ -230,7 +224,7 @@ namespace FTPClient.Commands
             }
             catch (Exception e)
             {
-                returnMessage = "The File does not exist";
+                returnMessage = "The File does not exist: " + e;
             }
 
             return returnMessage;
