@@ -56,8 +56,7 @@ namespace FTPClient.Console
                     // Create a ConsoleCommand instance:
                     var cmd = new ConsoleCommand(consoleInput);
 
-                    //Write command history to log file
-                    writeToHistory = new FileStream("./history.txt", FileMode.OpenOrCreate, FileAccess.Write);
+                    writeToHistory = new FileStream("./history.txt", FileMode.Append, FileAccess.Write);
                     writer = new StreamWriter(writeToHistory);
                     writer.WriteLine(consoleInput);
                     writer.Close();
@@ -158,7 +157,7 @@ namespace FTPClient.Console
                         string argumentTypeName = typeRequired.Name;
                         string message =
                             string.Format(""
-                            + "The value passed for argument '{0}' cannot be parsed to type '{1}'",
+                            + "The value passed for argument '{0}' cannot be parsed to type '{1}': " + ex,
                             argumentName, argumentTypeName);
                         throw new ArgumentException(message);
                     }
