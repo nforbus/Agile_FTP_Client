@@ -114,7 +114,7 @@ namespace FTPClient.Commands
         public static string mv(string target, string name)
         {
             string returnMessage = "";
-            string res = "";
+
             try
             {
                 foreach (FtpListItem item in Client.clientObject.GetListing(Client.clientObject.GetWorkingDirectory()))
@@ -122,14 +122,16 @@ namespace FTPClient.Commands
                     if(item.FullName == target)
                     {
                         Client.clientObject.Rename(target, name);
+                        return returnMessage;
                     }
                 }
-                returnMessage = res;
+                returnMessage = "1: Could not find file/directory to rename.";
             }
             catch (Exception e)
             {
                 returnMessage = "Rename failed with exception: " + e;
             }
+            
             return returnMessage;
         }
 
@@ -151,15 +153,20 @@ namespace FTPClient.Commands
                     if (item == qualifiedTarget)
                     {
                         Directory.Move(qualifiedTarget, qualifiedName);
+                        return returnMessage;
                     }
+
                 }
                 foreach (string file in files)
                 {
                     if (file == qualifiedTarget)
                     {
                         File.Move(qualifiedTarget, qualifiedName);
+                        return returnMessage;
                     }
                 }
+
+                returnMessage = "1: RCould not find file/directory to rename.";
             }
             catch (Exception e)
             {
@@ -463,8 +470,15 @@ namespace FTPClient.Commands
             string returnMessage = "";
             try
             {
-                Client.clientObject.DeleteFile(fileToDelete);
-                returnMessage = "Deleted file: " + fileToDelete;
+                if(Client.clientObject.FileExists(fileToDelete))
+                {
+                    Client.clientObject.DeleteFile(fileToDelete);
+                    returnMessage = "Deleted file: " + fileToDelete;
+                }
+                else {
+                    returnMessage = "1: File could not be located to delete.\n";
+                }
+
             }
             catch (Exception e)
             {
@@ -556,6 +570,127 @@ namespace FTPClient.Commands
             {
                 return "There is no saved information. Please use the Login command to connect to a server.";
             }
+        }
+
+        public static string runTests()
+        {
+            /* Sets up the unit testing environment;
+             * Keeps an index of the number of success & fail tests
+             * Keeps an index of the number of success & fail tests that behave appropriately
+             * Creates a connection if there isn't one (prompts password for the ftpuser)
+             * Creates the unittests directory and goes into it
+             * Creates a test file inside of it
+             * Deletes the entire unittests directory at the end of the test, and logs out. */
+
+            string returnMessage = null;
+            int successfulSuccess = 0;
+            int successfulFail = 0;
+            int actualSuccess = 0;
+            int actualFail = 0;
+            string testSuccess = null;
+            string testFail = null;
+
+            if(Client.clientObject == null)
+            {
+                Login("35.185.209.33", "ftpuser");
+            }
+
+            if(Client.clientObject.DirectoryExists("/unittests"))
+            {
+                cd("/unittests");
+            }
+            else
+            {
+                mkdir("/unittests");
+                cd("/unittests");
+            }
+
+            FileStream writeTestFile;
+            StreamWriter writer = null;
+            writeTestFile = new FileStream("./test.txt", FileMode.Append, FileAccess.Write);
+            writer = new StreamWriter(writeTestFile);
+            writer.WriteLine("Test.\n");
+            writer.Close();
+            writer.Dispose();
+
+            upload("./test.txt", "./test.txt");
+
+            //Add tests below for each of the functions you want to unit test
+
+            //Test mv()
+            successfulSuccess += 1;
+            successfulFail += 1;
+
+            testSuccess = mv("/test", "/test2");
+            mv("/test2", "/test");
+            testFail = mv("/test2", "/test3");
+
+            if(!testSuccess[0].Equals("1"))
+            {
+                ++actualSuccess;
+            }
+
+            if(!testFail[0].Equals("1"))
+            {
+                ++actualFail;
+            }
+
+            testSuccess = null;
+            testFail = null;
+
+            //Test mvLocal()
+            successfulSuccess += 1;
+            successfulFail += 1;
+
+            File.Create("./test.txt");
+            testSuccess = mvLocal("./test.txt", "./test2.txt");
+            mvLocal("./test2.txt", "./test.txt");
+            testFail = mvLocal("./test2.txt", "./test3.txt");
+
+            if (!testSuccess[0].Equals("1"))
+            {
+                ++actualSuccess;
+            }
+
+            if (!testFail[0].Equals("1"))
+            {
+                ++actualFail;
+            }
+
+            testSuccess = null;
+            testFail = null;
+
+            //Test history() -- does not need a test
+
+            //Test rmr()
+            successfulSuccess += 1;
+            successfulFail += 1;
+
+            testSuccess = rmr("./test.txt");
+            upload("./test.txt", "./test.txt");
+            testFail = rmr("./test2.txt");
+
+            if (!testSuccess[0].Equals("1"))
+            {
+                ++actualSuccess;
+            }
+
+            if (!testFail[0].Equals("1"))
+            {
+                ++actualFail;
+            }
+
+            testSuccess = null;
+            testFail = null;
+
+            //cleanup and return results
+            returnMessage = "Out of " + successfulSuccess + " success tests, " + actualSuccess + " tests were successful as expected.\n";
+            returnMessage += "Out of " + successfulFail + " failure tests, " + actualFail + " tests failed as expected.\n";
+
+            rmdir("/unittests");
+            exit();
+
+            return returnMessage;
         }
     }
 }
