@@ -729,6 +729,56 @@ namespace FTPClient.Commands
             testSuccess = null;
             testFail = null;
 
+            //Test lr()
+            successfulSuccess += 1;
+            successfulFail += 1;
+
+            testSuccess = lr();
+            Client.clientObject = null;
+            testFail = lr();
+            if (Client.clientObject == null)
+            {
+                Login("35.185.209.33", "ftpuser");
+            }
+
+            if (!testSuccess[0].Equals("1"))
+            {
+                ++actualSuccess;
+            }
+
+            if (!testFail[0].Equals("1"))
+            {
+                ++actualFail;
+            }
+
+            testSuccess = null;
+            testFail = null;
+
+            //Test findr()
+            successfulSuccess += 1;
+            successfulFail += 1;
+
+            testSuccess = findr("test.txt");
+            Client.clientObject = null;
+            testFail = findr("test.txt");
+            if (Client.clientObject == null)
+            {
+                Login("35.185.209.33", "ftpuser");
+            }
+
+            if (!testSuccess[0].Equals("1"))
+            {
+                ++actualSuccess;
+            }
+
+            if (!testFail[0].Equals("1"))
+            {
+                ++actualFail;
+            }
+
+            testSuccess = null;
+            testFail = null;
+
             //cleanup and return results
             returnMessage = "Out of " + successfulSuccess + " success tests, " + actualSuccess + " tests were successful as expected.\n";
             returnMessage += "Out of " + successfulFail + " failure tests, " + actualFail + " tests failed as expected.\n";
