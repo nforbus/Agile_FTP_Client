@@ -683,6 +683,52 @@ namespace FTPClient.Commands
             testSuccess = null;
             testFail = null;
 
+            //Test findl()
+            string result1;
+            successfulSuccess += 1;
+            successfulFail += 1;
+
+            result1 = findl("Console.cs");
+            if (result1.IsBlank())
+            {
+                ++actualFail;
+            }
+            else
+            {
+                ++actualSuccess;
+            }
+
+            if (!testSuccess[0].Equals("1"))
+            {
+                ++actualSuccess;
+            }
+
+            if (!testFail[0].Equals("1"))
+            {
+                ++actualFail;
+            }
+
+            testSuccess = null;
+            testFail = null;
+
+            //Test ls()
+            string result2;
+            successfulSuccess += 1;
+            successfulFail += 1;
+
+            result2 = ls();
+            if(result2.IsBlank())
+            { 
+                ++actualFail;
+            }
+            else
+            {
+                ++actualSuccess;
+            }
+
+            testSuccess = null;
+            testFail = null;
+
             //cleanup and return results
             returnMessage = "Out of " + successfulSuccess + " success tests, " + actualSuccess + " tests were successful as expected.\n";
             returnMessage += "Out of " + successfulFail + " failure tests, " + actualFail + " tests failed as expected.\n";
@@ -691,6 +737,8 @@ namespace FTPClient.Commands
             exit();
 
             return returnMessage;
+
+
         }
     }
 }
